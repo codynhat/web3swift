@@ -10,9 +10,13 @@ import BigInt
 
 extension web3 {
     
-    /// The contract instance. Initialized in runtime from ABI string (that is a JSON array). In addition an existing contract address can be supplied to provide the default "to" address in all the following requests. ABI version is 2 by default and should not be changed.
+    /// The contract instance. Initialized in runtime from ABI string (that is a JSON array) or an EthereumContract instance. In addition an existing contract address can be supplied to provide the default "to" address in all the following requests. ABI version is 2 by default and should not be changed.
     public func contract(_ abiString: String, at: EthereumAddress? = nil, abiVersion: Int = 2) -> web3contract? {
         return web3contract(web3: self, abiString: abiString, at: at, transactionOptions: self.transactionOptions, abiVersion: abiVersion)
+    }
+	
+	public func contract(_ contract: EthereumContract, at: EthereumAddress? = nil) -> web3contract? {
+        return web3contract(web3: self, contract: contract, at: at, transactionOptions: self.transactionOptions)
     }
     
     /// Web3 instance bound contract instance.
