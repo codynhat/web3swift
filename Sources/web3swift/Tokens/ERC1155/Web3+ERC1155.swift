@@ -41,7 +41,7 @@ open class ERC1155: IERC1155 {
     public var address: EthereumAddress
     public var abi: String
     
-    lazy var contract: web3.web3contract = {
+    public lazy var contract: web3.web3contract = {
         let contract = self.web3.contract(self.abi, at: self.address, abiVersion: 2)
         precondition(contract != nil)
         return contract!
