@@ -25,32 +25,31 @@ extension web3 {
         /// Initialize the bound contract instance by supplying the Web3 provider bound object, ABI, Ethereum address and some default
         /// options for further function calls. By default the contract inherits options from the web3 object. Additionally supplied "options"
         /// do override inherited ones.
-		public init?(web3 web3Instance:web3, contract: EthereumContract, transactionOptions: TransactionOptions? = nil) {
+		public init?(web3 web3Instance: web3, contract: EthereumContract, at: EthereumAddress? = nil, transactionOptions: TransactionOptions? = nil) {
             self.web3 = web3Instance
             self.transactionOptions = web3.transactionOptions
 			self.contract = contract
             var mergedOptions = self.transactionOptions?.merge(transactionOptions)
             if at != nil {
-                contract.address = at
+				self.contract.address = at
                 mergedOptions?.to = at
             } else if let addr = mergedOptions?.to {
-                contract.address = addr
+				self.contract.address = addr
             }
             self.transactionOptions = mergedOptions
         }
 		
-        convenience public init?(web3 web3Instance:web3, abiString: String, at: EthereumAddress? = nil, transactionOptions: TransactionOptions? = nil, abiVersion: Int = 2) {
+        convenience public init?(web3 web3Instance: web3, abiString: String, at: EthereumAddress? = nil, transactionOptions: TransactionOptions? = nil, abiVersion: Int = 2) {
             switch abiVersion {
             case 1:
                 print("ABIv1 bound contract is now deprecated")
                 return nil
             case 2:
                 guard let c = EthereumContract(abiString, at: at) else {return nil}
-                contract = c
+				self.init(web3: web3Instance, contract: c, transactionOptions: transactionOptions)
             default:
                 return nil
             }
-			self.init(web3: web3, contract: contract, transactionOptions: transactionOptions)
         }
         
         /// Deploys a constact instance using the previously provided (at initialization) ABI, some bytecode, constructor parameters and options.
