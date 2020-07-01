@@ -25,9 +25,21 @@ extension web3 {
         /// Initialize the bound contract instance by supplying the Web3 provider bound object, ABI, Ethereum address and some default
         /// options for further function calls. By default the contract inherits options from the web3 object. Additionally supplied "options"
         /// do override inherited ones.
-        public init?(web3 web3Instance:web3, abiString: String, at: EthereumAddress? = nil, transactionOptions: TransactionOptions? = nil, abiVersion: Int = 2) {
+		public init?(web3 web3Instance:web3, contract: EthereumContract, transactionOptions: TransactionOptions? = nil) {
             self.web3 = web3Instance
             self.transactionOptions = web3.transactionOptions
+			self.contract = contract
+            var mergedOptions = self.transactionOptions?.merge(transactionOptions)
+            if at != nil {
+                contract.address = at
+                mergedOptions?.to = at
+            } else if let addr = mergedOptions?.to {
+                contract.address = addr
+            }
+            self.transactionOptions = mergedOptions
+        }
+		
+        convenience public init?(web3 web3Instance:web3, abiString: String, at: EthereumAddress? = nil, transactionOptions: TransactionOptions? = nil, abiVersion: Int = 2) {
             switch abiVersion {
             case 1:
                 print("ABIv1 bound contract is now deprecated")
@@ -38,14 +50,7 @@ extension web3 {
             default:
                 return nil
             }
-            var mergedOptions = self.transactionOptions?.merge(transactionOptions)
-            if at != nil {
-                contract.address = at
-                mergedOptions?.to = at
-            } else if let addr = mergedOptions?.to {
-                contract.address = addr
-            }
-            self.transactionOptions = mergedOptions
+			self.init(web3: web3, contract: contract, transactionOptions: transactionOptions)
         }
         
         /// Deploys a constact instance using the previously provided (at initialization) ABI, some bytecode, constructor parameters and options.
