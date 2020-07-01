@@ -12,7 +12,7 @@ import PromiseKit
 //import EthereumAddress
 
 //The Ownable contract has an owner address, and provides basic authorization control functions, this simplifies the implementation of "user permissions".
-protocol IOwnable {
+public protocol IOwnable {
     //Allows the current owner to relinquish control of the contract.
     func renounceOwnership(from: EthereumAddress) throws -> WriteTransaction
     
@@ -21,7 +21,7 @@ protocol IOwnable {
 }
 
 //Security token interface
-protocol ISecurityToken: IST20, IOwnable {
+public protocol ISecurityToken: IST20, IOwnable {
     // Value of current checkpoint
     func currentCheckpointId() throws -> BigUInt
     
@@ -63,7 +63,7 @@ protocol ISecurityToken: IST20, IOwnable {
     func getInvestorsLength() throws -> BigUInt
 }
 
-public class SecurityToken: ISecurityToken {
+open class SecurityToken: ISecurityToken {
     
     private var _name: String? = nil
     private var _symbol: String? = nil
@@ -151,7 +151,7 @@ public class SecurityToken: ISecurityToken {
             }.wait()
     }
     
-    func tokenDetails() throws -> [UInt32] {
+	public func tokenDetails() throws -> [UInt32] {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -160,7 +160,7 @@ public class SecurityToken: ISecurityToken {
         return res
     }
     
-    func verifyTransfer(from: EthereumAddress, originalOwner: EthereumAddress, to: EthereumAddress, amount: String) throws -> WriteTransaction {
+	public func verifyTransfer(from: EthereumAddress, originalOwner: EthereumAddress, to: EthereumAddress, amount: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -183,7 +183,7 @@ public class SecurityToken: ISecurityToken {
         return tx
     }
     
-    func mint(from: EthereumAddress, investor: EthereumAddress, amount: String) throws -> WriteTransaction {
+	public func mint(from: EthereumAddress, investor: EthereumAddress, amount: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from

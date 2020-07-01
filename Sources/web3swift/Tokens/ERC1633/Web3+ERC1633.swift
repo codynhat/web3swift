@@ -12,14 +12,14 @@ import BigInt
 import PromiseKit
 
 ///Re-Fungible Token Standard (RFT)
-protocol IERC1633: IERC20, IERC165 {
+public protocol IERC1633: IERC20, IERC165 {
     
     func parentToken() throws -> EthereumAddress
     func parentTokenId() throws -> BigUInt
     
 }
 
-public class ERC1633: IERC1633 {
+open class ERC1633: IERC1633 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil
@@ -223,7 +223,7 @@ public class ERC1633: IERC1633 {
         return tx
     }
 
-    func parentToken() throws -> EthereumAddress {
+	public func parentToken() throws -> EthereumAddress {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -232,7 +232,7 @@ public class ERC1633: IERC1633 {
         return res
     }
     
-    func parentTokenId() throws -> BigUInt {
+	public func parentTokenId() throws -> BigUInt {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest

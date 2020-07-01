@@ -10,7 +10,7 @@ import BigInt
 import PromiseKit
 
 //Token Standard
-protocol IERC20 {
+public protocol IERC20 {
     func getBalance(account: EthereumAddress) throws -> BigUInt
     func getAllowance(originalOwner: EthereumAddress, delegate: EthereumAddress) throws -> BigUInt
     func transfer(from: EthereumAddress, to: EthereumAddress, amount: String) throws -> WriteTransaction
@@ -23,7 +23,7 @@ protocol IERC20 {
 // This namespace contains functions to work with ERC20 tokens.
 // variables are lazyly evaluated or global token information (name, ticker, total supply)
 // can be imperatively read and saved
-public class ERC20: IERC20 {
+open class ERC20: IERC20 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

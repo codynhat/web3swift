@@ -11,7 +11,7 @@ import PromiseKit
 //import EthereumAddress
 
 //A New Advanced Token Standard
-protocol IERC777: IERC20, IERC820 {
+public protocol IERC777: IERC20, IERC820 {
     func getDefaultOperators() throws -> [EthereumAddress]
     func getGranularity() throws -> BigUInt
     func getBalance(account: EthereumAddress) throws -> BigUInt
@@ -30,7 +30,7 @@ protocol IERC777: IERC20, IERC820 {
 
 // This namespace contains functions to work with ERC777 tokens.
 // can be imperatively read and saved
-public class ERC777: IERC777 {
+open class ERC777: IERC777 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

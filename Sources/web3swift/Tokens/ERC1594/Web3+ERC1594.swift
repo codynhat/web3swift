@@ -12,7 +12,7 @@ import BigInt
 import PromiseKit
 
 //Core Security Token Standard
-protocol IERC1594: IERC20 {
+public protocol IERC1594: IERC20 {
     
     // Transfers
     func transferWithData(from: EthereumAddress, to: EthereumAddress, amount: String, data: [UInt8]) throws -> WriteTransaction
@@ -32,7 +32,7 @@ protocol IERC1594: IERC20 {
     
 }
 
-public class ERC1594: IERC1594 {
+open class ERC1594: IERC1594 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

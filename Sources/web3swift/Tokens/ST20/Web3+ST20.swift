@@ -12,7 +12,7 @@ import PromiseKit
 //import EthereumAddress
 
 //NPolymath Token Standard
-protocol IST20: IERC20 {
+public protocol IST20: IERC20 {
     // off-chain hash
     func tokenDetails() throws -> [UInt32]
     
@@ -28,7 +28,7 @@ protocol IST20: IERC20 {
 
 // This namespace contains functions to work with ST-20 tokens.
 // can be imperatively read and saved
-public class ST20: IST20 {
+open class ST20: IST20 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil
@@ -116,7 +116,7 @@ public class ST20: IST20 {
             }.wait()
     }
     
-    func tokenDetails() throws -> [UInt32] {
+	public func tokenDetails() throws -> [UInt32] {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -125,7 +125,7 @@ public class ST20: IST20 {
         return res
     }
     
-    func verifyTransfer(from: EthereumAddress, originalOwner: EthereumAddress, to: EthereumAddress, amount: String) throws -> WriteTransaction {
+	public func verifyTransfer(from: EthereumAddress, originalOwner: EthereumAddress, to: EthereumAddress, amount: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -148,7 +148,7 @@ public class ST20: IST20 {
         return tx
     }
     
-    func mint(from: EthereumAddress, investor: EthereumAddress, amount: String) throws -> WriteTransaction {
+	public func mint(from: EthereumAddress, investor: EthereumAddress, amount: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from

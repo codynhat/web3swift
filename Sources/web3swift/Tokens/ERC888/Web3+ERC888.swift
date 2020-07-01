@@ -12,12 +12,12 @@ import BigInt
 import PromiseKit
 
 //MultiDimensional Token Standard
-protocol IERC888 {
+public protocol IERC888 {
     func getBalance(account: EthereumAddress) throws -> BigUInt
     func transfer(from: EthereumAddress, to: EthereumAddress, amount: String) throws -> WriteTransaction
 }
 
-public class ERC888: IERC888 {
+open class ERC888: IERC888 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

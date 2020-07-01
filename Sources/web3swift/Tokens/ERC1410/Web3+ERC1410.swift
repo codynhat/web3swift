@@ -12,7 +12,7 @@ import BigInt
 import PromiseKit
 
 //Partially Fungible Token Standard
-protocol IERC1410: IERC20 {
+public protocol IERC1410: IERC20 {
     
     // Token Information
     func getBalance(account: EthereumAddress) throws -> BigUInt
@@ -42,7 +42,7 @@ protocol IERC1410: IERC20 {
     
 }
 
-public class ERC1410: IERC1410 {
+open class ERC1410: IERC1410 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

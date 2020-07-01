@@ -12,7 +12,7 @@ import PromiseKit
 //import EthereumAddress
 
 //Multi Token Standard
-protocol IERC1155: IERC165 {
+public protocol IERC1155: IERC165 {
     
     func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, id: BigUInt, value: BigUInt, data: [UInt8]) throws -> WriteTransaction
     
@@ -25,12 +25,12 @@ protocol IERC1155: IERC165 {
     func isApprovedForAll(owner: EthereumAddress, operator user: EthereumAddress, scope: Data) throws -> Bool
 }
 
-protocol IERC1155Metadata {
+public protocol IERC1155Metadata {
     func uri(id: BigUInt) throws -> String
     func name(id: BigUInt) throws -> String
 }
 
-public class ERC1155: IERC1155 {
+open class ERC1155: IERC1155 {
     
     private var _tokenId: BigUInt? = nil
     private var _hasReadProperties: Bool = false

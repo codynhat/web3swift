@@ -11,7 +11,7 @@ import BigInt
 import PromiseKit
 
 //Security Token Standard
-protocol IERC1400: IERC20 {
+public protocol IERC1400: IERC20 {
     
     // Document Management
     func getDocument(name: Data) throws -> (String, Data)
@@ -64,7 +64,7 @@ protocol IERC1400: IERC20 {
 // This namespace contains functions to work with ERC1400 tokens.
 // variables are lazyly evaluated or global token information (name, ticker, total supply)
 // can be imperatively read and saved
-public class ERC1400: IERC1400 {
+open class ERC1400: IERC1400 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

@@ -12,7 +12,7 @@ import BigInt
 import PromiseKit
 
 //Document Management Standard
-protocol IERC1643: IERC20 {
+public protocol IERC1643: IERC20 {
     
     // Document Management
     func getDocument(name: Data) throws -> (String, Data)
@@ -22,7 +22,7 @@ protocol IERC1643: IERC20 {
     
 }
 
-public class ERC1643: IERC1643 {
+open class ERC1643: IERC1643 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

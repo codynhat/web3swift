@@ -12,7 +12,7 @@ import BigInt
 import PromiseKit
 
 //Controller Token Operation Standard
-protocol IERC1644: IERC20 {
+public protocol IERC1644: IERC20 {
     
     // Controller Operation
     func isControllable() throws -> Bool
@@ -21,7 +21,7 @@ protocol IERC1644: IERC20 {
     
 }
 
-public class ERC1644: IERC1644 {
+open class ERC1644: IERC1644 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil

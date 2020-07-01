@@ -14,7 +14,7 @@ import PromiseKit
 ///A Smarter Token for the Future of Crypto Collectibles
 ///ERC721x is an extension of ERC721 that adds support for multi-fungible tokens and batch transfers, while being fully backward-compatible.
 
-protocol IERC721x: IERC721, IERC721Metadata, IERC721Enumerable {
+public protocol IERC721x: IERC721, IERC721Metadata, IERC721Enumerable {
     func implementsERC721X() throws -> Bool
     func getOwner(tokenId: BigUInt) throws -> EthereumAddress
     func getBalance(account: EthereumAddress) throws -> BigUInt
@@ -36,7 +36,7 @@ protocol IERC721x: IERC721, IERC721Metadata, IERC721Enumerable {
     func symbol() throws -> String
 }
 
-public class ERC721x: IERC721x {
+open class ERC721x: IERC721x {
     
     private var _tokenId: BigUInt? = nil
     private var _hasReadProperties: Bool = false
@@ -253,7 +253,7 @@ public class ERC721x: IERC721x {
         return res
     }
     
-    func implementsERC721X() throws -> Bool {
+	public func implementsERC721X() throws -> Bool {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -262,7 +262,7 @@ public class ERC721x: IERC721x {
         return res
     }
     
-    func getBalance(account: EthereumAddress, tokenId: BigUInt) throws -> BigUInt {
+	public func getBalance(account: EthereumAddress, tokenId: BigUInt) throws -> BigUInt {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -271,7 +271,7 @@ public class ERC721x: IERC721x {
         return res
     }
     
-    func tokensOwned(account: EthereumAddress) throws -> ([BigUInt], [BigUInt]) {
+	public func tokensOwned(account: EthereumAddress) throws -> ([BigUInt], [BigUInt]) {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -280,7 +280,7 @@ public class ERC721x: IERC721x {
         return res
     }
     
-    func transfer(from: EthereumAddress, to: EthereumAddress, tokenId: BigUInt, quantity: BigUInt) throws -> WriteTransaction {
+	public func transfer(from: EthereumAddress, to: EthereumAddress, tokenId: BigUInt, quantity: BigUInt) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -290,7 +290,7 @@ public class ERC721x: IERC721x {
         return tx
     }
     
-    func transferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenId: BigUInt, quantity: BigUInt) throws -> WriteTransaction {
+	public func transferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenId: BigUInt, quantity: BigUInt) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -300,7 +300,7 @@ public class ERC721x: IERC721x {
         return tx
     }
     
-    func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenId: BigUInt, amount: BigUInt) throws -> WriteTransaction {
+	public func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenId: BigUInt, amount: BigUInt) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -310,7 +310,7 @@ public class ERC721x: IERC721x {
         return tx
     }
     
-    func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenId: BigUInt, amount: BigUInt, data: [UInt8]) throws -> WriteTransaction {
+	public func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenId: BigUInt, amount: BigUInt, data: [UInt8]) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -320,7 +320,7 @@ public class ERC721x: IERC721x {
         return tx
     }
     
-    func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenIds: [BigUInt], amounts: [BigUInt], data: [UInt8]) throws -> WriteTransaction {
+	public func safeTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, tokenIds: [BigUInt], amounts: [BigUInt], data: [UInt8]) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from

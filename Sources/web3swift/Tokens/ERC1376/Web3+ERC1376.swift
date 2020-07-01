@@ -36,7 +36,7 @@ extension DirectDebitInfo: Hashable {
 }
 
 //Service-Friendly Token Standard
-protocol IERC1376: IERC20 {
+public protocol IERC1376: IERC20 {
     func approve(from: EthereumAddress, spender: EthereumAddress, expectedValue: String, newValue: String) throws -> WriteTransaction
     func increaseAllowance(from: EthereumAddress, spender: EthereumAddress, value: String) throws -> WriteTransaction
     func decreaseAllowance(from: EthereumAddress, spender: EthereumAddress, value: String, strict: Bool) throws -> WriteTransaction
@@ -67,7 +67,7 @@ protocol IERC1376: IERC20 {
     func withdrawDirectDebit(from: EthereumAddress, debtors: [EthereumAddress], strict: Bool) throws -> WriteTransaction
 }
 
-public class ERC1376: IERC1376 {
+open class ERC1376: IERC1376 {
     
     private var _name: String? = nil
     private var _symbol: String? = nil
@@ -271,7 +271,7 @@ public class ERC1376: IERC1376 {
         return res
     }
     
-    func approve(from: EthereumAddress, spender: EthereumAddress, expectedValue: String, newValue: String) throws -> WriteTransaction {
+	public func approve(from: EthereumAddress, spender: EthereumAddress, expectedValue: String, newValue: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -297,7 +297,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func increaseAllowance(from: EthereumAddress, spender: EthereumAddress, value: String) throws -> WriteTransaction {
+	public func increaseAllowance(from: EthereumAddress, spender: EthereumAddress, value: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -320,7 +320,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func decreaseAllowance(from: EthereumAddress, spender: EthereumAddress, value: String, strict: Bool) throws -> WriteTransaction {
+	public func decreaseAllowance(from: EthereumAddress, spender: EthereumAddress, value: String, strict: Bool) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -343,7 +343,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func setERC20ApproveChecking(from: EthereumAddress, approveChecking: Bool) throws -> WriteTransaction {
+	public func setERC20ApproveChecking(from: EthereumAddress, approveChecking: Bool) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -353,7 +353,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func spendableAllowance(owner: EthereumAddress, spender: EthereumAddress) throws -> BigUInt {
+	public func spendableAllowance(owner: EthereumAddress, spender: EthereumAddress) throws -> BigUInt {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -362,7 +362,7 @@ public class ERC1376: IERC1376 {
         return res
     }
     
-    func transfer(from: EthereumAddress, data: String) throws -> WriteTransaction {
+	public func transfer(from: EthereumAddress, data: String) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -384,7 +384,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func transferAndCall(from: EthereumAddress, to: EthereumAddress, value: String, data: [UInt8]) throws -> WriteTransaction {
+	public func transferAndCall(from: EthereumAddress, to: EthereumAddress, value: String, data: [UInt8]) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -406,7 +406,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func nonceOf(owner: EthereumAddress) throws -> BigUInt {
+	public func nonceOf(owner: EthereumAddress) throws -> BigUInt {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -415,7 +415,7 @@ public class ERC1376: IERC1376 {
         return res
     }
     
-    func increaseNonce(from: EthereumAddress) throws -> WriteTransaction {
+	public func increaseNonce(from: EthereumAddress) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -426,7 +426,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func delegateTransferAndCall(from: EthereumAddress, nonce: BigUInt, fee: BigUInt, gasAmount: BigUInt, to: EthereumAddress, value: String, data: [UInt8], mode: IERC1376DelegateMode, v: UInt8, r: Data, s: Data) throws -> WriteTransaction {
+	public func delegateTransferAndCall(from: EthereumAddress, nonce: BigUInt, fee: BigUInt, gasAmount: BigUInt, to: EthereumAddress, value: String, data: [UInt8], mode: IERC1376DelegateMode, v: UInt8, r: Data, s: Data) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -451,7 +451,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func directDebit(debtor: EthereumAddress, receiver: EthereumAddress) throws -> DirectDebit {
+	public func directDebit(debtor: EthereumAddress, receiver: EthereumAddress) throws -> DirectDebit {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
@@ -460,7 +460,7 @@ public class ERC1376: IERC1376 {
         return res
     }
     
-    func setupDirectDebit(from: EthereumAddress, receiver: EthereumAddress, info: DirectDebitInfo) throws -> WriteTransaction {
+	public func setupDirectDebit(from: EthereumAddress, receiver: EthereumAddress, info: DirectDebitInfo) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -470,7 +470,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func terminateDirectDebit(from: EthereumAddress, receiver: EthereumAddress) throws -> WriteTransaction {
+	public func terminateDirectDebit(from: EthereumAddress, receiver: EthereumAddress) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -480,7 +480,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func withdrawDirectDebit(from: EthereumAddress, debtor: EthereumAddress) throws -> WriteTransaction {
+	public func withdrawDirectDebit(from: EthereumAddress, debtor: EthereumAddress) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from
@@ -490,7 +490,7 @@ public class ERC1376: IERC1376 {
         return tx
     }
     
-    func withdrawDirectDebit(from: EthereumAddress, debtors: [EthereumAddress], strict: Bool) throws -> WriteTransaction {
+	public func withdrawDirectDebit(from: EthereumAddress, debtors: [EthereumAddress], strict: Bool) throws -> WriteTransaction {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.from = from

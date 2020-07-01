@@ -10,7 +10,7 @@ import PromiseKit
 //import EthereumAddress
 
 //Non-Fungible Token Standard 
-protocol IERC721: IERC165 {
+public protocol IERC721: IERC165 {
     
     func getBalance(account: EthereumAddress) throws -> BigUInt
     
@@ -33,7 +33,7 @@ protocol IERC721: IERC165 {
     func isApprovedForAll(owner: EthereumAddress, operator user: EthereumAddress) throws -> Bool
 }
 
-protocol IERC721Metadata {
+public protocol IERC721Metadata {
     
     func name() throws -> String
     
@@ -43,7 +43,7 @@ protocol IERC721Metadata {
     
 }
 
-protocol IERC721Enumerable {
+public protocol IERC721Enumerable {
     
     func totalSupply() throws -> BigUInt
     
@@ -54,7 +54,7 @@ protocol IERC721Enumerable {
     
 // This namespace contains functions to work with ERC721 tokens.
 // can be imperatively read and saved
-public class ERC721: IERC721 {
+open class ERC721: IERC721 {
     
     private var _tokenId: BigUInt? = nil
     private var _hasReadProperties: Bool = false
