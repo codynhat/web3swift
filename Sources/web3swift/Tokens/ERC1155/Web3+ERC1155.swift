@@ -18,11 +18,11 @@ public protocol IERC1155: IERC165 {
     
     func safeBatchTransferFrom(from: EthereumAddress, to: EthereumAddress, originalOwner: EthereumAddress, ids: [BigUInt], values: [BigUInt], data: [UInt8]) throws -> WriteTransaction
     
-    func balanceOf(account: EthereumAddress, id: BigUInt) throws -> BigUInt
+    func balanceOf(account: EthereumAddress, id: BigUInt) -> Promise<BigUInt>
     
     func setApprovalForAll(from: EthereumAddress, operator user: EthereumAddress, approved: Bool, scope: Data) throws -> WriteTransaction
     
-    func isApprovedForAll(owner: EthereumAddress, operator user: EthereumAddress, scope: Data) throws -> Bool
+    func isApprovedForAll(owner: EthereumAddress, operator user: EthereumAddress, scope: Data) -> Promise<Bool>
 }
 
 public protocol IERC1155Metadata {
@@ -107,13 +107,17 @@ open class ERC1155: IERC1155 {
         return tx
     }
     
-    public func balanceOf(account: EthereumAddress, id: BigUInt) throws -> BigUInt {
+    public func balanceOf(account: EthereumAddress, id: BigUInt) -> Promise<BigUInt> {
         let contract = self.contract
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
-        let result = try contract.read("balanceOf", parameters: [account, id] as [AnyObject], extraData: Data(), transactionOptions: self.transactionOptions)!.call(transactionOptions: transactionOptions)
-        guard let res = result["0"] as? BigUInt else {throw Web3Error.processingError(desc: "Failed to get result of expected type from the Ethereum node")}
-        return res
+		
+		return firstly {
+			contract.read("balanceOf", parameters: [account, id] as [AnyObject], extraData: Data(), transactionOptions: self.transactionOptions)!.callPromise(transactionOptions: transactionOptions)
+		}.map { (result: [String : Any]) throws -> BigUInt in
+			guard let res = result["0"] as? BigUInt else {throw Web3Error.processingError(desc: "Failed to get result of expected type from the Ethereum node")}
+			return res
+		}
     }
     
     public func setApprovalForAll(from: EthereumAddress, operator user: EthereumAddress, approved: Bool, scope: Data) throws -> WriteTransaction {
@@ -126,13 +130,16 @@ open class ERC1155: IERC1155 {
         return tx
     }
     
-    public func isApprovedForAll(owner: EthereumAddress, operator user: EthereumAddress, scope: Data) throws -> Bool {
+    public func isApprovedForAll(owner: EthereumAddress, operator user: EthereumAddress, scope: Data) -> Promise<Bool> {
         let contract = self.contract
         var basicOptions = TransactionOptions()
         basicOptions.callOnBlock = .latest
-        let result = try contract.read("isApprovedForAll", parameters: [owner, user, scope] as [AnyObject], extraData: Data(), transactionOptions: self.transactionOptions)!.call(transactionOptions: transactionOptions)
-        guard let res = result["0"] as? Bool else {throw Web3Error.processingError(desc: "Failed to get result of expected type from the Ethereum node")}
-        return res
+		return firstly {
+			contract.read("isApprovedForAll", parameters: [owner, user, scope] as [AnyObject], extraData: Data(), transactionOptions: self.transactionOptions)!.callPromise(transactionOptions: transactionOptions)
+		}.map { result throws in
+			guard let res = result["0"] as? Bool else {throw Web3Error.processingError(desc: "Failed to get result of expected type from the Ethereum node")}
+			return res
+		}
     }
     
     public func supportsInterface(interfaceID: String) throws -> Bool {
@@ -140,8 +147,10 @@ open class ERC1155: IERC1155 {
         var transactionOptions = TransactionOptions()
         transactionOptions.callOnBlock = .latest
         transactionOptions.gasLimit = .manual(30000)
-        let result = try contract.read("supportsInterface", parameters: [interfaceID] as [AnyObject], extraData: Data(), transactionOptions: self.transactionOptions)!.call(transactionOptions: transactionOptions)
-        guard let res = result["0"] as? Bool else {throw Web3Error.processingError(desc: "Failed to get result of expected type from the Ethereum node")}
-        return res
+		
+		let result = try contract.read("supportsInterface", parameters: [interfaceID] as [AnyObject], extraData: Data(), transactionOptions: self.transactionOptions)!.call(transactionOptions: transactionOptions)
+		
+		guard let res = result["0"] as? Bool else {throw Web3Error.processingError(desc: "Failed to get result of expected type from the Ethereum node")}
+		return res
     }
 }
